@@ -22,7 +22,7 @@ const Home: NextPage<HomeProps> = ({ db }) => {
         {/* <link rel="icon" href="/favicon.ico" /> */}
       </Head>
       <main>
-        <h1>Butts</h1>
+        <h1>ICAO Type Designators</h1>
         <ul>
           {db.map((item: any) => (
             <li key={db.indexOf(item)}>{item.Designator}</li>
