@@ -1,12 +1,10 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import React, { ChangeEventHandler, useState } from 'react';
-// import { Inter } from '@next/font/google';
+import Link from 'next/link';
 import { TextInput, Table } from '@mantine/core';
 import styles from '../styles/Home.module.css';
 import db from '../db.json';
-
-// const inter = Inter({ subsets: ['latin'] });
 
 interface HomeProps {
   db: any;
@@ -50,7 +48,7 @@ const Home: NextPage<HomeProps> = ({ db }) => {
           <tbody>
             {items.map((item: any) => (
               <tr key={items.indexOf(item)}>
-                <td>{item.ModelFullName}</td>
+                <td><Link href={`/type/${item.Designator}`}>{item.ModelFullName}</Link></td>
                 <td>{item.Designator}</td>
                 <td>{item.ManufacturerCode}</td>
               </tr>
@@ -62,7 +60,9 @@ const Home: NextPage<HomeProps> = ({ db }) => {
   );
 };
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
+  db.sort((a: any, b: any) => a.Designator.localeCompare(b.Designator));
+
   return {
     props: {
       db,
