@@ -1,6 +1,8 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import React, { ChangeEventHandler, useState } from 'react';
 // import { Inter } from '@next/font/google';
+import { TextInput, Table } from '@mantine/core';
 import styles from '../styles/Home.module.css';
 import db from '../db.json';
 
@@ -11,7 +13,15 @@ interface HomeProps {
 }
 
 const Home: NextPage<HomeProps> = ({ db }) => {
-  console.log(db);
+  const [query, setQuery] = useState<string>('');
+
+  const items = db.filter((item: any) => {
+    return (
+      item.Designator.toLocaleLowerCase().includes(query.toLocaleLowerCase()) ||
+      item.ModelFullName.toLocaleLowerCase().includes(query.toLocaleLowerCase()) ||
+      item.ManufacturerCode.toLocaleLowerCase().includes(query.toLocaleLowerCase())
+    );
+  });
 
   return (
     <>
@@ -23,11 +33,30 @@ const Home: NextPage<HomeProps> = ({ db }) => {
       </Head>
       <main>
         <h1>ICAO Type Designators</h1>
-        <ul>
-          {db.map((item: any) => (
-            <li key={db.indexOf(item)}>{item.Designator}</li>
-          ))}
-        </ul>
+        <TextInput
+          placeholder="Search..."
+          onChange={(e) => {
+            setQuery(e.target.value);
+          }}
+        />
+        <Table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Designator</th>
+              <th>Engine Manufacturer</th>
+            </tr>
+          </thead>
+          <tbody>
+            {items.map((item: any) => (
+              <tr key={items.indexOf(item)}>
+                <td>{item.ModelFullName}</td>
+                <td>{item.Designator}</td>
+                <td>{item.ManufacturerCode}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
       </main>
     </>
   );
