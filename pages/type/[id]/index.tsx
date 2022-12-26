@@ -13,9 +13,14 @@ interface TypeProps {
 }
 
 const TypePage: NextPage<TypeProps> = ({ types }) => {
+  const designator: string = types[0].Designator;
+
   return (
     <>
-      <h1>{types[0].Designator}</h1>
+      <Head>
+        <title>Type {types[0].Designator}</title>
+      </Head>
+      <h1>{designator}</h1>
       <Table>
         <thead>
           <tr>
