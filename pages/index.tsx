@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import React, { ChangeEventHandler, useState } from 'react';
+import { useRouter } from 'next/router';
+import React from 'react';
 import Link from 'next/link';
 import { TextInput, Table } from '@mantine/core';
 import styles from '../styles/Home.module.css';
@@ -11,21 +12,13 @@ interface HomeProps {
 }
 
 const Home: NextPage<HomeProps> = ({ db }) => {
-  const [query, setQuery] = useState<string>('');
+  const router = useRouter();
 
   const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      setQuery(e.currentTarget.value);
+      router.push(`?search=${e.currentTarget.value}`);
     }
   };
-
-  const items = db.filter((item: any) => {
-    return (
-      item.Designator.toLocaleLowerCase().includes(query.toLocaleLowerCase()) ||
-      item.ModelFullName.toLocaleLowerCase().includes(query.toLocaleLowerCase()) ||
-      item.ManufacturerCode.toLocaleLowerCase().includes(query.toLocaleLowerCase())
-    );
-  });
 
   return (
     <>
@@ -47,8 +40,8 @@ const Home: NextPage<HomeProps> = ({ db }) => {
             </tr>
           </thead>
           <tbody>
-            {items.map((item: any) => (
-              <tr key={items.indexOf(item)}>
+            {db.map((item: any) => (
+              <tr key={db.indexOf(item)}>
                 <td>
                   <Link href={`/type/${item.Designator}`}>{item.ModelFullName}</Link>
                 </td>
@@ -58,17 +51,35 @@ const Home: NextPage<HomeProps> = ({ db }) => {
             ))}
           </tbody>
         </Table>
+        <span>Next Database Update: December 30, 2022</span>
       </main>
     </>
   );
 };
 
-export async function getStaticProps() {
+export async function getServerSideProps(context: { query: { p: number; search: string } }) {
+  const page: number = (context.query?.p as number) || 1;
+  const searchQuery: string = (context.query?.search as string) || '';
+
+  const skip = page - 1;
+  const take = 25;
+
   db.sort((a: any, b: any) => a.Designator.localeCompare(b.Designator));
+
+  const ret = db.filter((item: any) => {
+    return (
+      item.Designator.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase()) ||
+      item.ModelFullName.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase()) ||
+      item.ManufacturerCode.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase())
+    );
+  });
+
+  const pageCount = Math.ceil(ret.length / take);
 
   return {
     props: {
-      db,
+      db: ret,
+      pageCount,
     },
   };
 }
