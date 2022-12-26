@@ -13,6 +13,12 @@ interface HomeProps {
 const Home: NextPage<HomeProps> = ({ db }) => {
   const [query, setQuery] = useState<string>('');
 
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      setQuery(e.currentTarget.value);
+    }
+  };
+
   const items = db.filter((item: any) => {
     return (
       item.Designator.toLocaleLowerCase().includes(query.toLocaleLowerCase()) ||
@@ -31,12 +37,7 @@ const Home: NextPage<HomeProps> = ({ db }) => {
       </Head>
       <main>
         <h1>ICAO Type Designators</h1>
-        <TextInput
-          placeholder="Search..."
-          onChange={(e) => {
-            setQuery(e.target.value);
-          }}
-        />
+        <TextInput placeholder="Search..." onKeyUp={handleKeyUp} />
         <Table>
           <thead>
             <tr>
@@ -48,7 +49,9 @@ const Home: NextPage<HomeProps> = ({ db }) => {
           <tbody>
             {items.map((item: any) => (
               <tr key={items.indexOf(item)}>
-                <td><Link href={`/type/${item.Designator}`}>{item.ModelFullName}</Link></td>
+                <td>
+                  <Link href={`/type/${item.Designator}`}>{item.ModelFullName}</Link>
+                </td>
                 <td>{item.Designator}</td>
                 <td>{item.ManufacturerCode}</td>
               </tr>
