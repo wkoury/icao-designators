@@ -18,7 +18,7 @@ const TypePage: NextPage<TypeProps> = ({ types }) => {
   return (
     <>
       <Head>
-        <title>Type {types[0].Designator}</title>
+        <title>Type {designator}</title>
       </Head>
       <h1>{designator}</h1>
       <Table>
