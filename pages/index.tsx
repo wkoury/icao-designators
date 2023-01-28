@@ -51,7 +51,7 @@ const Home: NextPage<HomeProps> = ({ db }) => {
             ))}
           </tbody>
         </Table>
-        <span>Next Database Update: January 27, 2023</span>
+        <span>Next Database Update: February 24, 2023</span>
       </main>
     </>
   );
