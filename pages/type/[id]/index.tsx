@@ -2,6 +2,7 @@ import type { GetStaticPaths, GetStaticProps, GetStaticPropsContext, NextPage } 
 import { Table } from '@mantine/core';
 import db from '../../../db.json';
 import Head from 'next/head';
+import styles from '../../../styles/Home.module.css';
 
 type Designator = {
   Designator: string;
@@ -20,7 +21,7 @@ const TypePage: NextPage<TypeProps> = ({ types }) => {
       <Head>
         <title>Type {designator}</title>
       </Head>
-      <h1>{designator}</h1>
+      <h1 className={styles.centerText}>{designator}</h1>
       <Table>
         <thead>
           <tr>

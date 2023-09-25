@@ -29,7 +29,7 @@ const Home: NextPage<HomeProps> = ({ db }) => {
         {/* <link rel="icon" href="/favicon.ico" /> */}
       </Head>
       <main>
-        <h1>ICAO Type Designators</h1>
+        <h1 className={styles.centerText}>ICAO Type Designators</h1>
         <TextInput placeholder="Search..." onKeyUp={handleKeyUp} />
         <Table>
           <thead>
@@ -51,7 +51,7 @@ const Home: NextPage<HomeProps> = ({ db }) => {
             ))}
           </tbody>
         </Table>
-        <span>Next Database Update: October 6, 2023</span>
+        <span className={styles.centerText}>Next Database Update: October 6, 2023</span>
       </main>
     </>
   );
