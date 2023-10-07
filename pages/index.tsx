@@ -11,6 +11,8 @@ interface HomeProps {
     db: any;
 }
 
+const NEXT_DATABASE_UPDATE = 'November 3, 2023';
+
 const Home: NextPage<HomeProps> = ({ db }) => {
     const router = useRouter();
 
@@ -54,7 +56,7 @@ const Home: NextPage<HomeProps> = ({ db }) => {
                         ))}
                     </tbody>
                 </Table>
-                <span className={styles.centerText}>Next Database Update: October 6, 2023</span>
+                <span className={styles.centerText}>Next Database Update: {NEXT_DATABASE_UPDATE}</span>
             </main>
         </>
     );
