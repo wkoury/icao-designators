@@ -11,7 +11,7 @@ interface HomeProps {
     db: any;
 }
 
-const NEXT_DATABASE_UPDATE = 'December 1, 2023';
+const NEXT_DATABASE_UPDATE = 'December 29, 2023';
 
 const Home: NextPage<HomeProps> = ({ db }) => {
     const router = useRouter();
